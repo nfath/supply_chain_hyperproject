@@ -2,116 +2,113 @@
 
 const { Contract } = require('fabric-contract-api');
 
-const accountObjType = "Account";
+const storageObjType = "storage";
 
-class BalanceTransfer extends Contract {
+const storage=require('./storage.json');
 
-    async initAccount(ctx, id, balance) {
-        const accountBalance = parseFloat(balance);
-        if (accountBalance < 0) {
-            throw new Error(`account balance cannot be negative`);
+class milkTransfer extends Contract {
+
+    async initStorage(ctx, id, amount) {  //I dont know if this part necessary we need only 1 storage
+        const storageamount = amount;
+        if (storageamount < 0) {
+            throw new Error(`storage amount cannot be negative`);
         }
 
-        const account = {
+        const storage = {
             id: id,
-            owner: this._getTxCreatorUID(ctx),
-            balance: accountBalance
+            //owner: this._getTxCreatorUID(ctx),
+            amount: storageamount
         }
 
-        if (await this._accountExists(ctx, account.id)) {
-            throw new Error(`the account ${account.id} already exists`);
+        if (await this._storageExists(ctx, storage.id)) {
+            throw new Error(`the storage ${storage.id} already exists`);
         }
 
-        await this._putAccount(ctx, account);
+        await this._putStorage(ctx, storage);
     }
 
-    async setBalance(ctx, id, newBalance) {
-        const newAccountBalance = parseFloat(newBalance);
-        if (newAccountBalance < 0) {
-            throw new Error(`account balance cannot be set to a negative value`);
+    async loadMilk(ctx, id, amount) {
+        const newMilkAmount = amount;
+        if (newMilkAmount < 0) {
+            throw new Error(`amount cannot be set to a negative value`);
         }
 
-        let account = await this._getAccount(ctx, id);
+        let storage = await this._getStorage(ctx, id);
 
-        const txCreator = this._getTxCreatorUID(ctx);
-        if (account.owner !== txCreator) {
-            throw new Error(`unauthorized access: you can't change account that doesn't belong to you`);
-        }
-
-        account.balance = newAccountBalance;
-        await this._putAccount(ctx, account);
+        storage.amount = newMilkAmount;
+        await this._putStorage(ctx, storage);
     }
 
-    async transfer(ctx, idFrom, idTo, amount) {
-        const amountToTransfer = parseFloat(amount);
+    async unloadMilk(ctx, idFrom, idTo, amount) {
+        const amountToTransfer = amount;
         if (amountToTransfer <= 0) {
             throw new Error(`amount to transfer cannot be negative`);
         }
 
-        let accountFrom = await this._getAccount(ctx, idFrom);
+        let storageFrom = await this._getStorage(ctx, idFrom);
 
-        const txCreator = this._getTxCreatorUID(ctx);
-        if (accountFrom.owner !== txCreator) {
-            throw new Error(`unauthorized access: you can't change account that doesn't belong to you`);
+        // const txCreator = this._getTxCreatorUID(ctx);
+        // if (storageFrom.owner !== txCreator) {
+        //     throw new Error(`unauthorized access: you can't change storage that doesn't belong to you`);
+        // }
+
+        let storageTo = await this._getStorage(ctx, idTo);
+
+        if (storageFrom.amount < amountToTransfer) {
+            throw new Error(`amount to transfer cannot be more than the current storage amount`);
         }
 
-        let accountTo = await this._getAccount(ctx, idTo);
+        storageFrom.amount -= amountToTransfer
+        storageTo.amount += amountToTransfer
 
-        if (accountFrom.balance < amountToTransfer) {
-            throw new Error(`amount to transfer cannot be more than the current account balance`);
-        }
-
-        accountFrom.balance -= amountToTransfer
-        accountTo.balance += amountToTransfer
-
-        await this._putAccount(ctx, accountFrom);
-        await this._putAccount(ctx, accountTo);
+        await this._putStorage(ctx, storageFrom);
+        await this._putStorage(ctx, storageTo);
     }
 
-    async listAccounts(ctx) {
+    /*async liststorages(ctx) {
         const txCreator = this._getTxCreatorUID(ctx);
 
-        const iteratorPromise = ctx.stub.getStateByPartialCompositeKey(accountObjType, []);
+        const iteratorPromise = ctx.stub.getStateByPartialCompositeKey(storageObjType, []);
 
         let results = [];
         for await (const res of iteratorPromise) {
-            const account = JSON.parse(res.value.toString());
-            if (account.owner === txCreator) {
-                results.push(account);
+            const storage = JSON.parse(res.value.toString());
+            if (storage.owner === txCreator) {
+                results.push(storage);
             }
         }
 
         return JSON.stringify(results);
-    }
+    }*/
 
-    _getTxCreatorUID(ctx) {
+    /*_getTxCreatorUID(ctx) {
         return JSON.stringify({
             mspid: ctx.clientIdentity.getMSPID(),
             id: ctx.clientIdentity.getID()
         });
     }
 
-    async _accountExists(ctx, id) {
-        const compositeKey = ctx.stub.createCompositeKey(accountObjType, [id]);
-        const accountBytes = await ctx.stub.getState(compositeKey);
-        return accountBytes && accountBytes.length > 0;
-    }
+    async _storageExists(ctx, id) {
+        const compositeKey = ctx.stub.createCompositeKey(storageObjType, [id]);
+        const storageBytes = await ctx.stub.getState(compositeKey);
+        return storageBytes && storageBytes.length > 0;
+    }*/
 
-    async _getAccount(ctx, id) {
-        const compositeKey = ctx.stub.createCompositeKey(accountObjType, [id]);
+    async _getStorage(ctx, id) {
+        const compositeKey = ctx.stub.createCompositeKey(storageObjType, [id]);
 
-        const accountBytes = await ctx.stub.getState(compositeKey);
-        if (!accountBytes || accountBytes.length === 0) {
-            throw new Error(`the account ${id} does not exist`);
+        const storageBytes = await ctx.stub.getState(compositeKey);
+        if (!storageBytes || storageBytes.length === 0) {
+            throw new Error(`the storage ${id} does not exist`);
         }
 
-        return JSON.parse(accountBytes.toString());
+        return JSON.parse(storageBytes.toString());
     }
 
-    async _putAccount(ctx, account) {
-        const compositeKey = ctx.stub.createCompositeKey(accountObjType, [account.id]);
-        await ctx.stub.putState(compositeKey, Buffer.from(JSON.stringify(account)));
+    async _putstorage(ctx, storage) {
+        const compositeKey = ctx.stub.createCompositeKey(storageObjType, [storage.id]);
+        await ctx.stub.putState(compositeKey, Buffer.from(JSON.stringify(storage)));
     }
 }
 
-module.exports = BalanceTransfer;
+module.exports = amountTransfer;

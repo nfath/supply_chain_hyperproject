@@ -1,0 +1,16 @@
+{
+    "Producer": {
+        "ID": "1",
+        "Name": "milkfarm",
+        "Volume": ""
+                
+    }, 
+
+    "SuperMarket":{
+        "ID": "2",
+        "Name": "loblaw",
+        "Volume": ""
+        
+    }
+
+}
