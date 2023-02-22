@@ -29,9 +29,13 @@ peer chaincode invoke \
     --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
     --peerAddresses localhost:9051 \
     --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \
-    -c '{"function":"initAccount","Args":["A1","100"]}'
+    -c '{"function":"initStorage","Args":["A1","400"]}'
 
-Repeat same invoke command with -c '{"function":"setBalance","Args":["A1","150"]}'
+Repeat same invoke command with -c '{"function":"initStorage","Args":["A2","0"]}'
+
+Repeat same invoke command with -c '{"function":"loadMilk","Args":["A1","150"]}'
+
+Repeat same invoke command with -c '{"function":"transferMilk","Args":["A1","A2","150"]
 
 peer chaincode query \
     -C mychannel \
@@ -42,11 +46,11 @@ Change user to User1:
 
 CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp
 
-invoke '{"function":"initAccount","Args":["U1","100"]}'
+invoke '{"function":"initStorage","Args":["U1","100"]}'
 
-invoke '{"function":"setBalance","Args":["U1","250"]}'
+invoke '{"function":"loadMilk","Args":["U1","250"]}'
 
-invoke '{"function":"transfer","Args":["U1","A1", "100"]}'
+invoke '{"function":"transferMilk","Args":["U1","A1", "100"]}'
 
 
 Part 2: Using Fabric Application Gateway, Wallets to interact with Chaincode
