@@ -17,7 +17,7 @@ class MilkTransfer extends Contract {
         const storage = {
             id: id,
             //owner: this._getTxCreatorUID(ctx),
-            quality: quality,
+            //quality: quality,
             quantity: storageQuantity
         }
 
