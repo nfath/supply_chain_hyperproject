@@ -6,7 +6,7 @@ cd fabric-samples/test-network
 
 ./network.sh up createChannel -ca -s couchdb
 
-./network.sh deployCC -ccn balance_transfer -ccv 1.0 -ccp ../../account_balance_transfer_app/balance_transfer -ccl javascript
+./network.sh deployCC -ccn supply_chain -ccv 1.0 -ccp ../../supply_chain_hyperproject/supply_chain -ccl javascript
 
 Set environment variables:
 export CORE_PEER_TLS_ENABLED=true
@@ -24,7 +24,7 @@ peer chaincode invoke \
     --ordererTLSHostnameOverride orderer.example.com \
     --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
     -C mychannel \
-    -n balance_transfer \
+    -n supply_chain \
     --peerAddresses localhost:7051 \
     --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
     --peerAddresses localhost:9051 \
@@ -39,7 +39,7 @@ Repeat same invoke command with -c '{"function":"transferMilk","Args":["A1","A2"
 
 peer chaincode query \
     -C mychannel \
-    -n balance_transfer \
+    -n supply_chain \
     -c '{"function":"listAccounts", "Args":[]}'
 
 Change user to User1:
@@ -55,7 +55,7 @@ invoke '{"function":"transferMilk","Args":["U1","A1", "100"]}'
 
 Part 2: Using Fabric Application Gateway, Wallets to interact with Chaincode
 
-cd balance_transfer_app
+cd supply_chain_app
 
 First you have to enroll the admin user:
 
@@ -67,11 +67,11 @@ node registerUser.js 'CAAdmin@org1.example.com' 'User1@org1.example.com' '{"secr
 
 node enrollUser.js 'User1@org1.example.com' 'User1@org1.example.com' userpw
 
-Using User1 credentials create account acc1:
+Using User1 credentials create account/storage acc1:
 
-node submitTransaction.js 'User1@org1.example.com' initAccount acc1 100
+node submitTransaction.js 'User1@org1.example.com' initStorage acc1 100
 
-To check the balance:
+To check the storage:
 
 node submitTransaction.js 'User1@org1.example.com' listAccounts
 
@@ -83,12 +83,12 @@ node enrollUser.js 'User2@org1.example.com' 'User2@org1.example.com' userpw2
 
 Using User 2 create acc2:
 
-node submitTransaction.js 'User2@org1.example.com' initAccount acc2 200
+node submitTransaction.js 'User2@org1.example.com' initStorage acc2 200
 
-Get Account Balance:
+Get Account/Storage Balance/info:
 
 node submitTransaction.js 'User2@org1.example.com' listAccounts
 
-Now transfer 50 from acc2 to acc1:
+Now transfer 50 (liter) from acc2 to acc1:
 
-node submitTransaction.js 'User2@org1.example.com' transfer acc2 acc1 50
+node submitTransaction.js 'User2@org1.example.com' transferMilkM acc2 acc1 50
