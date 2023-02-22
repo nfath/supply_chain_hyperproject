@@ -29,7 +29,7 @@ class MilkTransfer extends Contract {
     }
 
     async loadMilk(ctx, id, newQuantity) {
-        const newMilkQuantity = parseFLoat(newQuantity);
+        const newMilkQuantity = parseFloat(newQuantity);
         
         if (newMilkQuantity < 0) {
             throw new Error(`quantity cannot be set to a negative value`);
