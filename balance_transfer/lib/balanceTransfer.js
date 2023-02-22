@@ -6,11 +6,11 @@ const storageObjType = "storage";
 
 const storage=require('./storage.json');
 
-class milkTransfer extends Contract {
+class MilkTransfer extends Contract {
 
-    async initStorage( id, quantity,ctx) {  //I dont know if this part necessary we need only 1 storage
-        const storagequantity = parseFloat(quantity);
-        if (storagequantity < 0) {
+    async initStorage(ctx ,id, quantity) {  //I dont know if this part necessary we need only 1 storage
+        const storageQuantity = parseFloat(quantity);
+        if (storageQuantity < 0) {
             throw new Error(`storage quantity cannot be negative`);
         }
 
@@ -18,7 +18,7 @@ class milkTransfer extends Contract {
             id: id,
             //owner: this._getTxCreatorUID(ctx),
             quality: quality,
-            quantity: storagequantity
+            quantity: storageQuantity
         }
 
         if (await this._storageExists(ctx, storage.id)) {
@@ -28,21 +28,21 @@ class milkTransfer extends Contract {
         await this._putStorage(ctx, storage);
     }
 
-    async loadMilk(ctx, id, quantity, quality) {
-        const newMilkquantity = quantity;
+    async loadMilk(ctx, id, newQuantity) {
+        const newMilkQuantity = parseFLoat(newQuantity);
         
-        if (newMilkquantity < 0) {
+        if (newMilkQuantity < 0) {
             throw new Error(`quantity cannot be set to a negative value`);
         }
 
         let storage = await this._getStorage(ctx, id);
 
-        storage.quantity = newMilkquantity;
+        storage.quantity = newMilkQuantity;
         await this._putStorage(ctx, storage);
     }
 
-    async unloadMilk(ctx, idFrom, idTo, quantity) {
-        const quantityToTransfer = quantity;
+    async unloadMilk(ctx, idFrom, idTo, amount) {
+        const quantityToTransfer = parseFLoat(amount);
         if (quantityToTransfer <= 0) {
             throw new Error(`quantity to transfer cannot be negative`);
         }
@@ -113,4 +113,4 @@ class milkTransfer extends Contract {
     }
 }
 
-module.exports = quantityTransfer;
+module.exports = MilkTransfer;
