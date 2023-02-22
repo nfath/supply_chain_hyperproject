@@ -21,9 +21,9 @@ class MilkTransfer extends Contract {
             quantity: storageQuantity
         }
 
-        if (await this._storageExists(ctx, storage.id)) {
-            throw new Error(`the storage ${storage.id} already exists`);
-        }
+        // if (await this._storageExists(ctx, storage.id)) {
+        //     throw new Error(`the storage ${storage.id} already exists`);
+        // }
 
         await this._putStorage(ctx, storage);
     }
