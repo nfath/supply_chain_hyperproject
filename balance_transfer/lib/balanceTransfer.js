@@ -8,7 +8,7 @@ const storage=require('./storage.json');
 
 class milkTransfer extends Contract {
 
-    async initStorage(ctx, id, quantity) {  //I dont know if this part necessary we need only 1 storage
+    async initStorage( id, quantity,ctx) {  //I dont know if this part necessary we need only 1 storage
         const storagequantity = quantity;
         if (storagequantity < 0) {
             throw new Error(`storage quantity cannot be negative`);
