@@ -41,7 +41,7 @@ class MilkTransfer extends Contract {
         await this._putStorage(ctx, storage);
     }
 
-    async unloadMilk(ctx, idFrom, idTo, amount) {
+    async transferMilk(ctx, idFrom, idTo, amount) {
         const quantityToTransfer = parseFLoat(amount);
         if (quantityToTransfer <= 0) {
             throw new Error(`quantity to transfer cannot be negative`);
