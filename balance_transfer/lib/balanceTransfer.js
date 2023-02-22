@@ -8,16 +8,17 @@ const storage=require('./storage.json');
 
 class milkTransfer extends Contract {
 
-    async initStorage(ctx, id, amount) {  //I dont know if this part necessary we need only 1 storage
-        const storageamount = amount;
-        if (storageamount < 0) {
-            throw new Error(`storage amount cannot be negative`);
+    async initStorage(ctx, id, quantity) {  //I dont know if this part necessary we need only 1 storage
+        const storagequantity = quantity;
+        if (storagequantity < 0) {
+            throw new Error(`storage quantity cannot be negative`);
         }
 
         const storage = {
             id: id,
             //owner: this._getTxCreatorUID(ctx),
-            amount: storageamount
+            quality: quality,
+            quantity: storagequantity
         }
 
         if (await this._storageExists(ctx, storage.id)) {
@@ -27,22 +28,23 @@ class milkTransfer extends Contract {
         await this._putStorage(ctx, storage);
     }
 
-    async loadMilk(ctx, id, amount) {
-        const newMilkAmount = amount;
-        if (newMilkAmount < 0) {
-            throw new Error(`amount cannot be set to a negative value`);
+    async loadMilk(ctx, id, quantity, quality) {
+        const newMilkquantity = quantity;
+        
+        if (newMilkquantity < 0) {
+            throw new Error(`quantity cannot be set to a negative value`);
         }
 
         let storage = await this._getStorage(ctx, id);
 
-        storage.amount = newMilkAmount;
+        storage.quantity = newMilkquantity;
         await this._putStorage(ctx, storage);
     }
 
-    async unloadMilk(ctx, idFrom, idTo, amount) {
-        const amountToTransfer = amount;
-        if (amountToTransfer <= 0) {
-            throw new Error(`amount to transfer cannot be negative`);
+    async unloadMilk(ctx, idFrom, idTo, quantity) {
+        const quantityToTransfer = quantity;
+        if (quantityToTransfer <= 0) {
+            throw new Error(`quantity to transfer cannot be negative`);
         }
 
         let storageFrom = await this._getStorage(ctx, idFrom);
@@ -54,12 +56,12 @@ class milkTransfer extends Contract {
 
         let storageTo = await this._getStorage(ctx, idTo);
 
-        if (storageFrom.amount < amountToTransfer) {
-            throw new Error(`amount to transfer cannot be more than the current storage amount`);
+        if (storageFrom.quantity < quantityToTransfer) {
+            throw new Error(`quantity to transfer cannot be more than the current storage quantity`);
         }
 
-        storageFrom.amount -= amountToTransfer
-        storageTo.amount += amountToTransfer
+        storageFrom.quantity -= quantityToTransfer
+        storageTo.quantity += quantityToTransfer
 
         await this._putStorage(ctx, storageFrom);
         await this._putStorage(ctx, storageTo);
@@ -105,10 +107,10 @@ class milkTransfer extends Contract {
         return JSON.parse(storageBytes.toString());
     }
 
-    async _putstorage(ctx, storage) {
+    async _putStorage(ctx, storage) {
         const compositeKey = ctx.stub.createCompositeKey(storageObjType, [storage.id]);
         await ctx.stub.putState(compositeKey, Buffer.from(JSON.stringify(storage)));
     }
 }
 
-module.exports = amountTransfer;
+module.exports = quantityTransfer;
