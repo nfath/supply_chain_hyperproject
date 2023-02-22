@@ -40,7 +40,7 @@ Repeat same invoke command with -c '{"function":"transferMilk","Args":["A1","A2"
 peer chaincode query \
     -C mychannel \
     -n supply_chain \
-    -c '{"function":"listAccounts", "Args":[]}'
+    -c '{"function":"listStorages", "Args":[]}'
 
 Change user to User1:
 
@@ -73,7 +73,7 @@ node submitTransaction.js 'User1@org1.example.com' initStorage acc1 100
 
 To check the storage:
 
-node submitTransaction.js 'User1@org1.example.com' listAccounts
+node submitTransaction.js 'User1@org1.example.com' listStorages
 
 To register and enroll User2:
 
@@ -87,8 +87,8 @@ node submitTransaction.js 'User2@org1.example.com' initStorage acc2 200
 
 Get Account/Storage Balance/info:
 
-node submitTransaction.js 'User2@org1.example.com' listAccounts
+node submitTransaction.js 'User2@org1.example.com' listStorages
 
-Now transfer 50 (liter) from acc2 to acc1:
+Now transfer 50 (liter milk) from acc2 to acc1:
 
-node submitTransaction.js 'User2@org1.example.com' transferMilkM acc2 acc1 50
+node submitTransaction.js 'User2@org1.example.com' transferMilk acc2 acc1 50
