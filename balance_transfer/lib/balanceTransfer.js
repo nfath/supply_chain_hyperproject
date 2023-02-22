@@ -42,7 +42,7 @@ class MilkTransfer extends Contract {
     }
 
     async transferMilk(ctx, idFrom, idTo, amount) {
-        const quantityToTransfer = parseFLoat(amount);
+        const quantityToTransfer = parseFloat(amount);
         if (quantityToTransfer <= 0) {
             throw new Error(`quantity to transfer cannot be negative`);
         }
