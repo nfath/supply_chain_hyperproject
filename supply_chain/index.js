@@ -1,6 +1,6 @@
 'use strict';
 
-const milkTransfer = require('./lib/milkOperation');
+const supplyChain = require('./lib/Operation.js');
 
-module.exports.MilkTransfer = milkTransfer;
-module.exports.contracts = [milkTransfer];
+module.exports.SupplyChain = supplyChain;
+module.exports.contracts = [supplyChain];

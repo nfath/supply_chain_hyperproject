@@ -6,7 +6,7 @@ const storageObjType = "storage";
 
 const storage=require('./storage.json');
 
-class MilkTransfer extends Contract {
+class SupplyChain extends Contract {
 
     async initStorage(ctx ,id, quantity) {  //I dont know if this part necessary we need only 1 storage
         const storageQuantity = parseFloat(quantity);
@@ -28,20 +28,20 @@ class MilkTransfer extends Contract {
         await this._putStorage(ctx, storage);
     }
 
-    async loadMilk(ctx, id, newQuantity) {
-        const newMilkQuantity = parseFloat(newQuantity);
+    async loadProduct(ctx, id, newQuantity) {
+        const newProductQuantity = parseFloat(newQuantity);
         
-        if (newMilkQuantity < 0) {
+        if (newProductQuantity < 0) {
             throw new Error(`quantity cannot be set to a negative value`);
         }
 
         let storage = await this._getStorage(ctx, id);
 
-        storage.quantity = newMilkQuantity;
+        storage.quantity = newProductQuantity;
         await this._putStorage(ctx, storage);
     }
 
-    async transferMilk(ctx, idFrom, idTo, amount) {
+    async transferProduct(ctx, idFrom, idTo, amount) {
         const quantityToTransfer = parseFloat(amount);
         if (quantityToTransfer <= 0) {
             throw new Error(`quantity to transfer cannot be negative`);
@@ -113,4 +113,4 @@ class MilkTransfer extends Contract {
     }
 }
 
-module.exports = MilkTransfer;
+module.exports = SupplyChain;
