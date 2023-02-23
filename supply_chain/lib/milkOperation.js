@@ -67,7 +67,7 @@ class MilkTransfer extends Contract {
         await this._putStorage(ctx, storageTo);
     }
 
-    /*async liststorages(ctx) {
+    async listStorages(ctx) {
         const txCreator = this._getTxCreatorUID(ctx);
 
         const iteratorPromise = ctx.stub.getStateByPartialCompositeKey(storageObjType, []);
@@ -81,16 +81,16 @@ class MilkTransfer extends Contract {
         }
 
         return JSON.stringify(results);
-    }*/
+    }
 
-    /*_getTxCreatorUID(ctx) {
+    _getTxCreatorUID(ctx) {
         return JSON.stringify({
             mspid: ctx.clientIdentity.getMSPID(),
             id: ctx.clientIdentity.getID()
         });
     }
 
-    async _storageExists(ctx, id) {
+    /*async _storageExists(ctx, id) {
         const compositeKey = ctx.stub.createCompositeKey(storageObjType, [id]);
         const storageBytes = await ctx.stub.getState(compositeKey);
         return storageBytes && storageBytes.length > 0;
