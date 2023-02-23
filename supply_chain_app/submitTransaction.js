@@ -39,8 +39,8 @@ async function main() {
         console.log('Use channel "mychannel".');
         const network = await gateway.getNetwork('mychannel');
 
-        console.log('Use BalanceTransfer.');
-        const contract = network.getContract('balance_transfer');
+        console.log('Use SupplyChain.');
+        const contract = network.getContract('supply_chain');
 
         console.log('Submit ' + functionName + ' transaction.');
         const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
