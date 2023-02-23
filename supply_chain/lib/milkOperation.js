@@ -74,10 +74,10 @@ class MilkTransfer extends Contract {
 
         let results = [];
         for await (const res of iteratorPromise) {
-            const storage = JSON.parse(res.value.toString());
-            if (storage.owner === txCreator) {
-                results.push(storage);
-            }
+            results.push(JSON.parse(res.value.toString()));
+            // if (storage.owner === txCreator) {
+            //     results.push(storage);
+            // }
         }
 
         return JSON.stringify(results);
