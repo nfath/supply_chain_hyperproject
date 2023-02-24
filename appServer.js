@@ -53,11 +53,11 @@ app.get('/api/getList', async function (req, res) {
 
         console.log('Submit ' + functionName + ' transaction.');
 
-        const chainCodearguments = chaincodeArgs.split(" ");
-        console.log("Arguemtns: ", JSON.stringify(chaincodeArgs.split(" ")))
+        const chainCodearguments = JSON.stringify(chaincodeArgs.split(" "))
+        console.log("Arguemtns: ", chainCodearguments)
 
 
-        const response = await contract.submitTransaction(functionName, JSON.stringify(chaincodeArgs.split(" ")));
+        const response = await contract.submitTransaction(functionName, chainCodearguments);
         if (`${response}` !== '') {
             console.log(`Response from ${functionName}: ${response}`);
         }
