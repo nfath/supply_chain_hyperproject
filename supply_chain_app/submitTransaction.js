@@ -8,7 +8,7 @@ const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/te
 
 async function main() {
     const gateway = new Gateway();
-    const wallet = await Wallets.newFileSystemWallet('./supply_chain_app/wallet');
+    const wallet = await Wallets.newFileSystemWallet('./wallet');
 
     try {
         let args = process.argv.slice(2);
