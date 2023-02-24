@@ -95,28 +95,54 @@ app.get('/api/getList', async function (req, res) {
         const identityLabel = req.body.label;
         const functionName = req.body.function;
         const chaincodeArgs = req.body.arguments.slice(2);
+        const orgName = identityLabel.split('@')[1];
+        const orgNameWithoutDomain = orgName.split('.')[0];
 
-        console.log(identityLabel, functionName, chaincodeArgs)
+        let connectionProfile = JSON.parse(fs.readFileSync(
+            path.join(testNetworkRoot,
+                'organizations/peerOrganizations',
+                orgName,
+                `/connection-${orgNameWithoutDomain}.json`), 'utf8')
+        );
+
+        let connectionOptions = {
+            identity: identityLabel,
+            wallet: wallet,
+            discovery: { enabled: true, asLocalhost: true }
+        };
+
+        console.log('Connect to a Hyperledger Fabric gateway.');
+        await gateway.connect(connectionProfile, connectionOptions);
+
+        console.log("Wallet: ", JSON.stringify(wallet));
+        console.log("Gateway: ", JSON.stringify(check));
+
+        console.log('Use channel "mychannel".');
+        const network = await gateway.getNetwork('mychannel');
+
+        console.log('Use SupplyChain.');
+        const contract = network.getContract('supply_chain');
+
+        console.log('Submit ' + functionName + ' transaction.');
+        const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
+        if (`${response}` !== '') {
+            console.log(`Response from ${functionName}: ${response}`);
+        }
+
+        // console.log("contents:", contents)
 
 
-        console.log("In API")
+        // const ccp = JSON.parse(contents);
+        // // Create a new file system based wallet for managing identities.
+        // console.log("ccp:", ccp)
 
-        const contents = fs.readFileSync(ccpPath, 'utf8');
+        // // let wallet;
+        // const walletPath = path.resolve(__dirname, "wallet");
+        // console.log(`Wallet path: ${walletPath}`);
 
-        console.log("contents:", contents)
+        // wallet = await Wallets.newFileSystemWallet(walletPath);
 
-
-        const ccp = JSON.parse(contents);
-        // Create a new file system based wallet for managing identities.
-        console.log("ccp:", ccp)
-
-        // let wallet;
-        const walletPath = path.resolve(__dirname, "wallet");
-        console.log(`Wallet path: ${walletPath}`);
-
-        wallet = await Wallets.newFileSystemWallet(walletPath);
-
-        console.log("Wallet :", JSON.stringify(wallet));
+        // console.log("Wallet :", JSON.stringify(wallet));
         // const walletPath = path.join(process.cwd(), 'wallet');
         // const wallet = new FileSystemWallet(walletPath);
 
@@ -132,20 +158,20 @@ app.get('/api/getList', async function (req, res) {
 
         // Create a new gateway for connecting to our peer node.
         // const gateway = new Gateway();
-        const check = await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
-        console.log("Gateway :", JSON.stringify(check));
+        // const check = await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
+        // console.log("Gateway :", JSON.stringify(check));
 
-        // Get the network (channel) our contract is deployed to.
-        const network = await gateway.getNetwork('mychannel');
+        // // Get the network (channel) our contract is deployed to.
+        // const network = await gateway.getNetwork('mychannel');
 
-        // Get the contract from the network.
-        const contract = network.getContract('SupplyChain');
+        // // Get the contract from the network.
+        // const contract = network.getContract('SupplyChain');
 
-        // Evaluate the specified transaction.
-        // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
-        // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result = await contract.evaluateTransaction('listStorages');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // // Evaluate the specified transaction.
+        // // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
+        // // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
+        // const result = await contract.evaluateTransaction('listStorages');
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
         res.status(200).json({ response: result.toString() });
 
     } catch (error) {
