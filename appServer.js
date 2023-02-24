@@ -57,50 +57,7 @@ app.get('/api/getList', async function (req, res) {
             console.log(`Response from ${functionName}: ${response}`);
         }
 
-        // console.log("contents:", contents)
-
-
-        // const ccp = JSON.parse(contents);
-        // // Create a new file system based wallet for managing identities.
-        // console.log("ccp:", ccp)
-
-        // // let wallet;
-        // const walletPath = path.resolve(__dirname, "wallet");
-        // console.log(`Wallet path: ${walletPath}`);
-
-        // wallet = await Wallets.newFileSystemWallet(walletPath);
-
-        // console.log("Wallet :", JSON.stringify(wallet));
-        // const walletPath = path.join(process.cwd(), 'wallet');
-        // const wallet = new FileSystemWallet(walletPath);
-
-        // // Check to see if we've already enrolled the user.
-        // const userExists = await wallet.exists('user1');
-        // if (!userExists) {
-        //     console.log('An identity for the user "user1" does not exist in the wallet');
-        //     console.log('Run the registerUser.js application before retrying');
-        //     return;
-        // }
-
-
-
-        // Create a new gateway for connecting to our peer node.
-        // const gateway = new Gateway();
-        // const check = await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
-        // console.log("Gateway :", JSON.stringify(check));
-
-        // // Get the network (channel) our contract is deployed to.
-        // const network = await gateway.getNetwork('mychannel');
-
-        // // Get the contract from the network.
-        // const contract = network.getContract('SupplyChain');
-
-        // // Evaluate the specified transaction.
-        // // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
-        // // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        // const result = await contract.evaluateTransaction('listStorages');
-        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        res.status(200).json({ response: response.toString() });
+        res.status(200).json(response);
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
