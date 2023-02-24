@@ -57,11 +57,12 @@ app.get('/api/getList', async function (req, res) {
             console.log(`Response from ${functionName}: ${response}`);
         }
 
-        res.status(200).json({ response });
+        res.status(200).json(JSON.parse(response.toString()));
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
+        process.exit(1);
     }
 });
 
