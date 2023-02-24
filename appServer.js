@@ -49,7 +49,7 @@ app.get('/api/getList', async function (req, res) {
 
         console.log('Submit ' + functionName + ' transaction.');
 
-        const chainCodearguments = JSON.stringify(chaincodeArgs)
+        const chainCodearguments = (chaincodeArgs)
         console.log("Arguemtns: ", ...chainCodearguments)
 
 
