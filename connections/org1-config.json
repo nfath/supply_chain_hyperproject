@@ -1,7 +1,7 @@
 {
         "orgName": "Org1",
         "channelName" : "mychannel",
-        "chaincodeName" : "basic",
+        "chaincodeName" : "supply_chain_1.0",
         "mspOrg" : "Org1MSP",
         "userId" : "user1"
-   }
+}
