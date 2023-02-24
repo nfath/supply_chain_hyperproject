@@ -45,9 +45,6 @@ app.get('/api/getList', async function (req, res) {
         console.log('Connect to a Hyperledger Fabric gateway.');
         await gateway.connect(connectionProfile, connectionOptions);
 
-        console.log("Wallet: ", JSON.stringify(wallet));
-        console.log("Gateway: ", JSON.stringify(check));
-
         console.log('Use channel "mychannel".');
         const network = await gateway.getNetwork('mychannel');
 
