@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
+const port = 3000
 var app = express();
 app.use(bodyParser.json());
 
@@ -175,4 +176,6 @@ app.put('/api/changeowner/:car_index', async function (req, res) {
     }
 })
 
-app.listen(8080);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})
