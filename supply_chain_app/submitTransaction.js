@@ -50,6 +50,7 @@ async function main() {
 
         console.log('Submit ' + functionName + ' transaction.');
         console.log("ChainCodeArgumentsForTransaction: ", ...chaincodeArgs)
+        console.log("ChainCodeArgumentsForTransactionType: ", typeof chaincodeArgs)
         const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
         if (`${response}` !== '') {
             console.log(`Response from ${functionName}: ${response}`);
