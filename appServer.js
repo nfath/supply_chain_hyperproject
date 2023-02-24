@@ -100,7 +100,7 @@ app.get('/api/getList', async function (req, res) {
         // // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
         // const result = await contract.evaluateTransaction('listStorages');
         // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        res.status(200).json({ response: result.toString() });
+        res.status(200).json({ response: response.toString() });
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
