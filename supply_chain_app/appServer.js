@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 app.get('/api/getList', async function (req, res) {
     try {
         const gateway = new Gateway();
-        const wallet = await Wallets.newFileSystemWallet('./supply_chain_app/wallet');
+        const wallet = await Wallets.newFileSystemWallet('./wallet');
 
         const identityLabel = req.body.label;
         const functionName = req.body.function;
