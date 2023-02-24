@@ -18,17 +18,17 @@ app.get('/api/queryallcars', async function (req, res) {
     try {
 
         // Create a new file system based wallet for managing identities.
-        const walletPath = path.join(process.cwd(), 'wallet');
-        const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        // const walletPath = path.join(process.cwd(), 'wallet');
+        // const wallet = new FileSystemWallet(walletPath);
+        // console.log(`Wallet path: ${walletPath}`);
 
-        // Check to see if we've already enrolled the user.
-        const userExists = await wallet.exists('user1');
-        if (!userExists) {
-            console.log('An identity for the user "user1" does not exist in the wallet');
-            console.log('Run the registerUser.js application before retrying');
-            return;
-        }
+        // // Check to see if we've already enrolled the user.
+        // const userExists = await wallet.exists('user1');
+        // if (!userExists) {
+        //     console.log('An identity for the user "user1" does not exist in the wallet');
+        //     console.log('Run the registerUser.js application before retrying');
+        //     return;
+        // }
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
