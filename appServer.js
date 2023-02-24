@@ -1,59 +1,56 @@
 
 
-async function main() {
+// async function main() {
 
-    try {
-        let args = process.argv.slice(2);
+//     try {
+//         let args = process.argv.slice(2);
 
-        const identityLabel = args[0];
-        const functionName = args[1];
-        const chaincodeArgs = args.slice(2);
+//         const identityLabel = args[0];
+//         const functionName = args[1];
+//         const chaincodeArgs = args.slice(2);
 
-        const orgName = identityLabel.split('@')[1];
-        const orgNameWithoutDomain = orgName.split('.')[0];
+//         const orgName = identityLabel.split('@')[1];
+//         const orgNameWithoutDomain = orgName.split('.')[0];
 
-        let connectionProfile = JSON.parse(fs.readFileSync(
-            path.join(testNetworkRoot,
-                'organizations/peerOrganizations',
-                orgName,
-                `/connection-${orgNameWithoutDomain}.json`), 'utf8')
-        );
+//         let connectionProfile = JSON.parse(fs.readFileSync(
+//             path.join(testNetworkRoot,
+//                 'organizations/peerOrganizations',
+//                 orgName,
+//                 `/connection-${orgNameWithoutDomain}.json`), 'utf8')
+//         );
 
-        let connectionOptions = {
-            identity: identityLabel,
-            wallet: wallet,
-            discovery: { enabled: true, asLocalhost: true }
-        };
+//         let connectionOptions = {
+//             identity: identityLabel,
+//             wallet: wallet,
+//             discovery: { enabled: true, asLocalhost: true }
+//         };
 
-        console.log('Connect to a Hyperledger Fabric gateway.');
-        const check = await gateway.connect(connectionProfile, connectionOptions);
+//         console.log('Connect to a Hyperledger Fabric gateway.');
+//         const check = await gateway.connect(connectionProfile, connectionOptions);
 
-        console.log("Wallet: ", JSON.stringify(wallet));
-        console.log("Gateway: ", JSON.stringify(check));
+//         console.log("Wallet: ", JSON.stringify(wallet));
+//         console.log("Gateway: ", JSON.stringify(check));
 
-        console.log('Use channel "mychannel".');
-        const network = await gateway.getNetwork('mychannel');
+//         console.log('Use channel "mychannel".');
+//         const network = await gateway.getNetwork('mychannel');
 
-        console.log('Use SupplyChain.');
-        const contract = network.getContract('supply_chain');
+//         console.log('Use SupplyChain.');
+//         const contract = network.getContract('supply_chain');
 
-        console.log('Submit ' + functionName + ' transaction.');
-        const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
-        if (`${response}` !== '') {
-            console.log(`Response from ${functionName}: ${response}`);
-        }
+//         console.log('Submit ' + functionName + ' transaction.');
+//         const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
+//         if (`${response}` !== '') {
+//             console.log(`Response from ${functionName}: ${response}`);
+//         }
 
-    } catch (error) {
-        console.log(`Error processing transaction. ${error}`);
-        console.log(error.stack);
-    } finally {
-        console.log('Disconnect from the gateway.');
-        gateway.disconnect();
-    }
-}
-
-main();
-
+//     } catch (error) {
+//         console.log(`Error processing transaction. ${error}`);
+//         console.log(error.stack);
+//     } finally {
+//         console.log('Disconnect from the gateway.');
+//         gateway.disconnect();
+//     }
+// }
 
 
 
@@ -84,8 +81,6 @@ app.use(express.json());
 // Setting for Hyperledger Fabric
 // const ccpPath = path.resolve(__dirname, 'connections', `connection-org1.json`);
 // const ccpPath = path.resolve(__dirname, '.', 'connection-org1.json');
-const gateway = new Gateway();
-const wallet = await Wallets.newFileSystemWallet('./wallet');
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -94,6 +89,8 @@ app.get('/', (req, res) => {
 app.get('/api/getList', async function (req, res) {
     try {
 
+        const gateway = new Gateway();
+        const wallet = await Wallets.newFileSystemWallet('./wallet');
         console.log(req.body)
         // const identityLabel = req.body.label;
         // const functionName = req.body.;
@@ -112,7 +109,7 @@ app.get('/api/getList', async function (req, res) {
         // Create a new file system based wallet for managing identities.
         console.log("ccp:", ccp)
 
-        let wallet;
+        // let wallet;
         const walletPath = path.resolve(__dirname, "wallet");
         console.log(`Wallet path: ${walletPath}`);
 
@@ -133,7 +130,7 @@ app.get('/api/getList', async function (req, res) {
 
 
         // Create a new gateway for connecting to our peer node.
-        const gateway = new Gateway();
+        // const gateway = new Gateway();
         const check = await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
         console.log("Gateway :", JSON.stringify(check));
 
@@ -280,8 +277,4 @@ app.put('/api/changeowner/:car_index', async function (req, res) {
         console.error(`Failed to submit transaction: ${error}`);
         process.exit(1);
     }
-})
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
 })
