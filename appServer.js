@@ -36,7 +36,7 @@ app.get('/api/queryallcars', async function (req, res) {
 
         wallet = await Wallets.newFileSystemWallet(walletPath);
 
-        console.log(`Wallet : ${wallet}`);
+        console.log("Wallet :", JSON.stringify(wallet));
         // const walletPath = path.join(process.cwd(), 'wallet');
         // const wallet = new FileSystemWallet(walletPath);
 
