@@ -125,13 +125,14 @@ Producer Ships to Supplier
 Supplier Receives, Ships to Retailer
 Retailer Receives, Product Reaches Customer
 
+![HLF-PROJECT](https://user-images.githubusercontent.com/10506708/221318651-4c17ebbf-a38d-4147-aeda-33fe3ff94eb8.png)
 
 Project Implementation Diagram
 
 This workflow shows the system being used as we have designed it for the demonstration of this project. For simplicity, we have reduced each organization to a single peer each as there will be no risk for malicious use. 
 The workflow follows the same as the application diagram. 
 
-
+![HLF-PROJECT-2](https://user-images.githubusercontent.com/10506708/221318669-2aefbb06-21ef-4fda-81d6-dcc40bb35a15.png)
 
 # Roles and Policies
 
@@ -155,8 +156,11 @@ The chaincode has 4 functions.
 	loadProduct - Set the inventory information on the Ledge
 	transferProduct - updates the Ledger with the quantity shipped between parties
 	listStorage -  Reads storage information from the Ledger 
-Function Diagram
 	
+Function Diagram
+
+![HLF-PROJECT-3](https://user-images.githubusercontent.com/10506708/221318685-e80d5edf-e4aa-4fa4-b818-50914b3e8dac.png)
+
 The process begins with the initStorage function and follows down to loadProduct and then eventually transferProduct. The listStorage function is a view function which means it is outside the workflow, has full insight to the chain's information, and is always accessible.
 
 # Full Stack Workflow
@@ -169,6 +173,7 @@ The projects full stack architecture occurs as follows:
 4. The next step is split in two: the wallet stores data such as user and admin information and the gateway provides endpoint access to the network. Both are necessary for establishing a two-way connection between the end user and the information inside the application
 5. The final setup is the frontend application. This involves the process of integrating the frontend application with the Hyperledger Fabric network, using the wallet and gateway to interact with the network and provide a user interface that allows access to the system.
 
-
 # Full Stack Workflow Diagram
+
+![HLF-PROJECT-4](https://user-images.githubusercontent.com/10506708/221318700-894ce2af-3e39-47fb-9c45-6d1dc161b751.png)
 
