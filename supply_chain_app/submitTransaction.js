@@ -14,6 +14,7 @@ async function main() {
         let args = process.argv.slice(2);
 
         console.log("Arguments: ", args)
+        console.log("Arguments: ", typeof process.argv)
 
         const identityLabel = args[0];
         const functionName = args[1];
