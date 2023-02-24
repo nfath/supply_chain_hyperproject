@@ -21,20 +21,23 @@ async function main() {
         const orgNameWithoutDomain = orgName.split('.')[0];
 
         let connectionProfile = JSON.parse(fs.readFileSync(
-            path.join(testNetworkRoot, 
-                'organizations/peerOrganizations', 
-                orgName, 
+            path.join(testNetworkRoot,
+                'organizations/peerOrganizations',
+                orgName,
                 `/connection-${orgNameWithoutDomain}.json`), 'utf8')
         );
 
         let connectionOptions = {
             identity: identityLabel,
             wallet: wallet,
-            discovery: {enabled: true, asLocalhost: true}
+            discovery: { enabled: true, asLocalhost: true }
         };
 
         console.log('Connect to a Hyperledger Fabric gateway.');
-        await gateway.connect(connectionProfile, connectionOptions);
+        const check = await gateway.connect(connectionProfile, connectionOptions);
+
+        console.log("Wallet: ", JSON.stringify(wallet));
+        console.log("Gateway: ", JSON.stringify(check));
 
         console.log('Use channel "mychannel".');
         const network = await gateway.getNetwork('mychannel');

@@ -52,8 +52,8 @@ app.get('/api/queryallcars', async function (req, res) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
-        console.log("Gateway :", JSON.stringify(gateway));
-        await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
+        const check = await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
+        console.log("Gateway :", JSON.stringify(check));
 
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
