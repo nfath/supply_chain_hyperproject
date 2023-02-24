@@ -17,35 +17,44 @@ app.get('/', (req, res) => {
 app.get('/api/queryallcars', async function (req, res) {
     try {
 
-        // Create a new file system based wallet for managing identities.
-        // const walletPath = path.join(process.cwd(), 'wallet');
-        // const wallet = new FileSystemWallet(walletPath);
-        // console.log(`Wallet path: ${walletPath}`);
+        // Retirivig the chaincode object
+        const contract = await getContract(userId)
 
-        // // Check to see if we've already enrolled the user.
-        // const userExists = await wallet.exists('user1');
-        // if (!userExists) {
-        //     console.log('An identity for the user "user1" does not exist in the wallet');
-        //     console.log('Run the registerUser.js application before retrying');
-        //     return;
-        // }
+        // The resposne of the transaction
+        const response = await contract.submitTransaction("EnrollCustomer", customerId, firstName, lastName, transitId)
 
-        // Create a new gateway for connecting to our peer node.
-        const gateway = new Gateway();
-        await gateway.connect(ccpPath, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: false } });
+        // Parsing the JSON object from the response
+        return utils.prettyJSONString(response.toString());;
 
-        // Get the network (channel) our contract is deployed to.
-        const network = await gateway.getNetwork('mychannel');
+        // // Create a new file system based wallet for managing identities.
+        // // const walletPath = path.join(process.cwd(), 'wallet');
+        // // const wallet = new FileSystemWallet(walletPath);
+        // // console.log(`Wallet path: ${walletPath}`);
 
-        // Get the contract from the network.
-        const contract = network.getContract('supply_chain_1.0');
+        // // // Check to see if we've already enrolled the user.
+        // // const userExists = await wallet.exists('user1');
+        // // if (!userExists) {
+        // //     console.log('An identity for the user "user1" does not exist in the wallet');
+        // //     console.log('Run the registerUser.js application before retrying');
+        // //     return;
+        // // }
 
-        // Evaluate the specified transaction.
-        // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
-        // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        const result = await contract.evaluateTransaction('listStorages');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        res.status(200).json({ response: result.toString() });
+        // // Create a new gateway for connecting to our peer node.
+        // const gateway = new Gateway();
+        // await gateway.connect(ccpPath, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: false } });
+
+        // // Get the network (channel) our contract is deployed to.
+        // const network = await gateway.getNetwork('mychannel');
+
+        // // Get the contract from the network.
+        // const contract = network.getContract('supply_chain_1.0');
+
+        // // Evaluate the specified transaction.
+        // // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
+        // // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
+        // const result = await contract.evaluateTransaction('listStorages');
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // res.status(200).json({ response: result.toString() });
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
