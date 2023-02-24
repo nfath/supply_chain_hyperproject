@@ -1,0 +1,6 @@
+{
+    "channelName": "mychannel",
+    "chaincodename" : "basic",
+    "mspOrg1" : "Org2MSP",        
+    "org2UserId" : "appUser"
+}
