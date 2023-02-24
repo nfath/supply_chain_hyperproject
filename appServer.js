@@ -91,11 +91,12 @@ app.get('/api/getList', async function (req, res) {
 
         const gateway = new Gateway();
         const wallet = await Wallets.newFileSystemWallet('./wallet');
-        console.log(req.body)
-        // const identityLabel = req.body.label;
-        // const functionName = req.body.;
-        // const chaincodeArgs = args.slice(2);
 
+        const identityLabel = req.body.label;
+        const functionName = req.body.function;
+        const chaincodeArgs = req.body.arguments.slice(2);
+
+        console.log(identityLabel, functionName, chaincodeArgs)
 
 
         console.log("In API")
