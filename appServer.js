@@ -49,7 +49,7 @@ app.get('/api/getList', async function (req, res) {
 
         console.log('Submit ' + functionName + ' transaction.');
 
-        const chainCodearguments = JSON.parse(chaincodeArgs.split(" "))
+        const chainCodearguments = JSON.parse(chaincodeArgs)
         console.log("chainCodearguments: ", chainCodearguments)
         console.log("chainCodeargumentstype: ", typeof chainCodearguments)
 
