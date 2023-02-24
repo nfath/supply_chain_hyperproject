@@ -9,10 +9,6 @@ const port = 3000
 var app = express();
 app.use(express.json());
 
-// Setting for Hyperledger Fabric
-// const ccpPath = path.resolve(__dirname, 'connections', `connection-org1.json`);
-// const ccpPath = path.resolve(__dirname, '.', 'connection-org1.json');
-
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
@@ -54,7 +50,7 @@ app.get('/api/getList', async function (req, res) {
         console.log('Submit ' + functionName + ' transaction.');
 
         const chainCodearguments = JSON.stringify(chaincodeArgs.split(" "))
-        console.log("Arguemtns: ", chainCodearguments)
+        console.log("Arguemtns: ", ...chainCodearguments)
 
 
         const response = await contract.submitTransaction(functionName, chainCodearguments);
