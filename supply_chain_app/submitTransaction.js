@@ -19,6 +19,7 @@ async function main() {
         const functionName = args[1];
         const chaincodeArgs = args.slice(2);
         console.log("ChainCodeArguments: ", chaincodeArgs)
+        console.log("ChainCodeArgumentsType: ", typeof chaincodeArgs)
 
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
@@ -37,10 +38,7 @@ async function main() {
         };
 
         console.log('Connect to a Hyperledger Fabric gateway.');
-        const check = await gateway.connect(connectionProfile, connectionOptions);
-
-        console.log("Wallet: ", JSON.stringify(wallet));
-        console.log("Gateway: ", JSON.stringify(check));
+        await gateway.connect(connectionProfile, connectionOptions);
 
         console.log('Use channel "mychannel".');
         const network = await gateway.getNetwork('mychannel');
@@ -49,9 +47,11 @@ async function main() {
         const contract = network.getContract('supply_chain');
 
         console.log('Submit ' + functionName + ' transaction.');
+
         console.log("ChainCodeArgumentsForTransaction: ", ...chaincodeArgs)
         console.log("ChainCodeArgumentsForTransactionType: ", typeof chaincodeArgs)
         const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
+
         if (`${response}` !== '') {
             console.log(`Response from ${functionName}: ${response}`);
         }
