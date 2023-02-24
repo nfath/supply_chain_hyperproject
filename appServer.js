@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 // Setting for Hyperledger Fabric
 const { Wallets, Gateway } = require('fabric-network');
 const path = require('path');
-const ccpPath = path.resolve(__dirname, 'connections', `connection-${orgName.toLowerCase()}.json`);
+const ccpPath = path.resolve(__dirname, 'connections', `connection-org1.json`);
 // const ccpPath = path.resolve(__dirname, '.', 'connection-org1.json');
 
 app.get('/', (req, res) => {
