@@ -66,7 +66,6 @@ app.get('/api/getList', async function (req, res) {
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
-        process.exit(1);
     }
 });
 

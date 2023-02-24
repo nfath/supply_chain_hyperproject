@@ -8,14 +8,17 @@ const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/te
 
 async function main() {
     const gateway = new Gateway();
-    const wallet = await Wallets.newFileSystemWallet('./wallet');
+    const wallet = await Wallets.newFileSystemWallet('./supply_chain_app/wallet');
 
     try {
         let args = process.argv.slice(2);
 
+        console.log("Arguments: ", args)
+
         const identityLabel = args[0];
         const functionName = args[1];
         const chaincodeArgs = args.slice(2);
+        console.log("ChainCodeArguments: ", chaincodeArgs)
 
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
@@ -46,6 +49,7 @@ async function main() {
         const contract = network.getContract('supply_chain');
 
         console.log('Submit ' + functionName + ' transaction.');
+        console.log("ChainCodeArgumentsForTransaction: ", ...chaincodeArgs)
         const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
         if (`${response}` !== '') {
             console.log(`Response from ${functionName}: ${response}`);
