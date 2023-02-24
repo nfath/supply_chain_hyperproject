@@ -50,7 +50,7 @@ app.get('/api/getList', async function (req, res) {
         console.log('Submit ' + functionName + ' transaction.');
 
         const chainCodearguments = (chaincodeArgs)
-        console.log("Arguemtns: ", ...chainCodearguments)
+        console.log("Arguemtns: ", JSON.stringify(chainCodearguments))
 
 
         const response = await contract.submitTransaction(functionName, chainCodearguments);
@@ -63,6 +63,7 @@ app.get('/api/getList', async function (req, res) {
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
         res.status(500).json({ error: error });
+        process.exit(1);
     }
 });
 
