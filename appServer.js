@@ -32,11 +32,13 @@ app.get('/api/queryallcars', async function (req, res) {
 
         let wallet;
         const walletPath = path.resolve(__dirname, "wallet");
+        console.log(`Wallet path: ${walletPath}`);
+
         wallet = await Wallets.newFileSystemWallet(walletPath);
 
+        console.log(`Wallet : ${wallet}`);
         // const walletPath = path.join(process.cwd(), 'wallet');
         // const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
 
         // // Check to see if we've already enrolled the user.
         // const userExists = await wallet.exists('user1');
@@ -50,6 +52,7 @@ app.get('/api/queryallcars', async function (req, res) {
 
         // Create a new gateway for connecting to our peer node.
         const gateway = new Gateway();
+        console.log(`Gateway : ${gateway}`);
         await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: true, asLocalhost: false } });
 
         // Get the network (channel) our contract is deployed to.
