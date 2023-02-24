@@ -25,7 +25,7 @@ app.get('/api/getList', async function (req, res) {
 
         const identityLabel = req.body.label;
         const functionName = req.body.function;
-        const chaincodeArgs = req.body.arguments.slice(2);
+        const chaincodeArgs = req.body.arguments;
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
 
