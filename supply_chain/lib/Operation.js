@@ -8,7 +8,8 @@ const storage=require('./storage.json');
 
 class SupplyChain extends Contract {
 
-    async initStorage(ctx ,id, quantity) {  //I dont know if this part necessary we need only 1 storage
+    //initStorage() function creates facility on the ledger
+    async initStorage(ctx ,id, quantity) {  
         const storageQuantity = parseFloat(quantity);
         if (storageQuantity < 0) {
             throw new Error(`storage quantity cannot be negative`);
@@ -16,18 +17,14 @@ class SupplyChain extends Contract {
 
         const storage = {
             id: id,
-            //owner: this._getTxCreatorUID(ctx),
-            //quality: quality,
             quantity: storageQuantity
         }
 
-        // if (await this._storageExists(ctx, storage.id)) {
-        //     throw new Error(`the storage ${storage.id} already exists`);
-        // }
 
         await this._putStorage(ctx, storage);
     }
 
+    //loadProduct() function updates the current inventory to the ledger 
     async loadProduct(ctx, id, newQuantity) {
         const newProductQuantity = parseFloat(newQuantity);
         
@@ -40,7 +37,7 @@ class SupplyChain extends Contract {
         storage.quantity = newProductQuantity;
         await this._putStorage(ctx, storage);
     }
-
+    //transferProduct() function keeps track of transferred goods and updates the inventory for involved parties 
     async transferProduct(ctx, idFrom, idTo, amount) {
         const quantityToTransfer = parseFloat(amount);
         if (quantityToTransfer <= 0) {
@@ -49,10 +46,6 @@ class SupplyChain extends Contract {
 
         let storageFrom = await this._getStorage(ctx, idFrom);
 
-        // const txCreator = this._getTxCreatorUID(ctx);
-        // if (storageFrom.owner !== txCreator) {
-        //     throw new Error(`unauthorized access: you can't change storage that doesn't belong to you`);
-        // }
 
         let storageTo = await this._getStorage(ctx, idTo);
 
@@ -66,7 +59,8 @@ class SupplyChain extends Contract {
         await this._putStorage(ctx, storageFrom);
         await this._putStorage(ctx, storageTo);
     }
-
+    
+    //listStorages() function returns the current state of the ledger  
     async listStorages(ctx) {
         const txCreator = this._getTxCreatorUID(ctx);
 
@@ -75,14 +69,13 @@ class SupplyChain extends Contract {
         let results = [];
         for await (const res of iteratorPromise) {
             results.push(JSON.parse(res.value.toString()));
-            // if (storage.owner === txCreator) {
-            //     results.push(storage);
-            // }
+
         }
 
         return JSON.stringify(results);
     }
 
+    //_getTxCreator() provides identification  
     _getTxCreatorUID(ctx) {
         return JSON.stringify({
             mspid: ctx.clientIdentity.getMSPID(),
@@ -90,12 +83,7 @@ class SupplyChain extends Contract {
         });
     }
 
-    /*async _storageExists(ctx, id) {
-        const compositeKey = ctx.stub.createCompositeKey(storageObjType, [id]);
-        const storageBytes = await ctx.stub.getState(compositeKey);
-        return storageBytes && storageBytes.length > 0;
-    }*/
-
+    //_getStorage() function queries the ledger
     async _getStorage(ctx, id) {
         const compositeKey = ctx.stub.createCompositeKey(storageObjType, [id]);
 
@@ -106,7 +94,7 @@ class SupplyChain extends Contract {
 
         return JSON.parse(storageBytes.toString());
     }
-
+    //_putStorage() function writes to the ledger
     async _putStorage(ctx, storage) {
         const compositeKey = ctx.stub.createCompositeKey(storageObjType, [storage.id]);
         await ctx.stub.putState(compositeKey, Buffer.from(JSON.stringify(storage)));
