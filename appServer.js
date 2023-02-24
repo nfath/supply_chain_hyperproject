@@ -19,9 +19,16 @@ app.get('/', (req, res) => {
 app.get('/api/queryallcars', async function (req, res) {
     try {
 
+        console.log("In API")
+
         const contents = fs.readFileSync(ccpPath, 'utf8');
+
+        console.log("contents:", contents)
+
+
         const ccp = JSON.parse(contents);
         // Create a new file system based wallet for managing identities.
+        console.log("ccp:", ccp)
 
         let wallet;
         const walletPath = path.resolve(__dirname, "wallet");
