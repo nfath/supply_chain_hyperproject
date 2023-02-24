@@ -15,16 +15,15 @@ app.get('/', (req, res) => {
 
 app.get('/api/getList', async function (req, res) {
     try {
-        let args = process.argv.concat("hello");
-        console.log(args)
-        console.log(typeof args)
-
         const gateway = new Gateway();
         const wallet = await Wallets.newFileSystemWallet('./supply_chain_app/wallet');
 
         const identityLabel = req.body.label;
         const functionName = req.body.function;
         const chaincodeArgs = req.body.arguments;
+        let args = process.argv.slice(2).concat(chaincodeArgs);
+        console.log(args)
+        console.log(typeof args)
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
 
