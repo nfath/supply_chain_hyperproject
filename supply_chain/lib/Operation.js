@@ -4,12 +4,12 @@ const { Contract } = require('fabric-contract-api');
 
 const storageObjType = "storage";
 
-const storage=require('./storage.json');
+const storage = require('./storage.json');
 
 class SupplyChain extends Contract {
 
     //initStorage() function creates facility on the ledger
-    async initStorage(ctx ,id, quantity) {  
+    async initStorage(ctx, id, quantity) {
         const storageQuantity = parseFloat(quantity);
         if (storageQuantity < 0) {
             throw new Error(`storage quantity cannot be negative`);
@@ -22,12 +22,13 @@ class SupplyChain extends Contract {
 
 
         await this._putStorage(ctx, storage);
+        return JSON.stringify("success");
     }
 
     //loadProduct() function updates the current inventory to the ledger 
     async loadProduct(ctx, id, newQuantity) {
         const newProductQuantity = parseFloat(newQuantity);
-        
+
         if (newProductQuantity < 0) {
             throw new Error(`quantity cannot be set to a negative value`);
         }
@@ -36,6 +37,7 @@ class SupplyChain extends Contract {
 
         storage.quantity = newProductQuantity;
         await this._putStorage(ctx, storage);
+        return JSON.stringify("success");
     }
     //transferProduct() function keeps track of transferred goods and updates the inventory for involved parties 
     async transferProduct(ctx, idFrom, idTo, amount) {
@@ -58,8 +60,9 @@ class SupplyChain extends Contract {
 
         await this._putStorage(ctx, storageFrom);
         await this._putStorage(ctx, storageTo);
+        return JSON.stringify("success");
     }
-    
+
     //listStorages() function returns the current state of the ledger  
     async listStorages(ctx) {
         const txCreator = this._getTxCreatorUID(ctx);

@@ -16,12 +16,12 @@ app.get('/', (req, res) => {
 app.get('/api/getList', async function (req, res) {
     try {
         const gateway = new Gateway();
-        const wallet = await Wallets.newFileSystemWallet('./supply_chain_app/wallet');
+        const wallet = await Wallets.newFileSystemWallet('./wallet');
 
         const identityLabel = req.body.label;
         const functionName = req.body.function;
         const chaincodeArgs = req.body.arguments;
-        let args = process.argv.slice(2).concat(chaincodeArgs);
+        let args = process.argv.slice(2).concat(req.body.id, req.body.amount);
         console.log(args)
         console.log(typeof args)
         const orgName = identityLabel.split('@')[1];
@@ -55,9 +55,7 @@ app.get('/api/getList', async function (req, res) {
         console.log("ChainCodeArgumentsForTransactionType: ", typeof args)
 
         const response = await contract.submitTransaction(functionName, ...args);
-        if (`${response}` !== '') {
-            console.log(`Response from ${functionName}: ${response}`);
-        }
+        console.log(response)
 
         res.status(200).json(JSON.parse(response.toString()));
 
