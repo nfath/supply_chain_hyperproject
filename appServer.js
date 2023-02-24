@@ -10,6 +10,9 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
 const ccpPath = path.resolve(__dirname, '.', 'connection-org1.json');
 
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 
 app.get('/api/queryallcars', async function (req, res) {
     try {
