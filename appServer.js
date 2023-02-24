@@ -278,3 +278,7 @@ app.put('/api/changeowner/:car_index', async function (req, res) {
         process.exit(1);
     }
 })
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})
