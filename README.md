@@ -1,7 +1,7 @@
-Gianluca Di Vita - 101415332
-Nader Fathzadeh - 101441256
-Umut Yorulmaz - 101410083
-Sarim Sohail - 101416162
+Gianluca Di Vita - 101415332 \
+Nader Fathzadeh - 101441256 \
+Umut Yorulmaz - 101410083 \
+Sarim Sohail - 101416162 \
 
 
 
